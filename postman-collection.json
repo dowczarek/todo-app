@@ -1,12 +1,25 @@
 {
 	"info": {
-		"_postman_id": "e3bce0c4-05b0-4ecf-b1e8-aac3a65e05a2",
+		"_postman_id": "53ebba5b-22c2-425f-ae1c-7f6fdfa563ca",
 		"name": "todo-app",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "read tasks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -24,14 +37,97 @@
 			"response": []
 		},
 		{
+			"name": "read and sort tasks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/tasks?sort=description,desc",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks"
+					],
+					"query": [
+						{
+							"key": "sort",
+							"value": "description,desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "read paged tasks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/tasks?page=0&size=3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "create task",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "9414504a-4472-4e22-a21d-6699e78aef6a",
 						"exec": [
-							""
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.eql(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Location is present\", function () {\r",
+							"    pm.response.to.have.header(\"Location\");\r",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -70,31 +166,25 @@
 			"response": []
 		},
 		{
-			"name": "read and sort tasks",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/tasks?sort=description,desc",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"tasks"
-					],
-					"query": [
-						{
-							"key": "sort",
-							"value": "description,desc"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "partial update task",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains change description\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.description).to.eql(\"Def\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "PATCH",
 				"header": [
@@ -115,14 +205,14 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/tasks/6",
+					"raw": "localhost:8080/tasks/2",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"tasks",
-						"6"
+						"2"
 					]
 				}
 			},
@@ -130,6 +220,19 @@
 		},
 		{
 			"name": "update task",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "PUT",
 				"header": [
@@ -150,42 +253,14 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/tasks/5",
+					"raw": "localhost:8080/tasks/1",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"tasks",
-						"5"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "read paged tasks",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/tasks?page=0&size=3",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"tasks"
-					],
-					"query": [
-						{
-							"key": "page",
-							"value": "0"
-						},
-						{
-							"key": "size",
-							"value": "3"
-						}
+						"1"
 					]
 				}
 			},
@@ -193,18 +268,31 @@
 		},
 		{
 			"name": "delete task",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/tasks/3",
+					"raw": "localhost:8080/tasks/1",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"tasks",
-						"3"
+						"1"
 					]
 				}
 			},
@@ -216,11 +304,11 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "9414504a-4472-4e22-a21d-6699e78aef6a",
 						"exec": [
 							"pm.test(\"Status code is 400\", function () {",
 							"    pm.response.to.have.status(400);",
 							"});",
+							"",
 							"pm.test(\"Body contains error message\", function () {",
 							"    var body = pm.response.json();",
 							"    pm.expect(body.errors[0].message).to.eql(\"Tasks description must not be empty\");",
@@ -263,6 +351,5 @@
 			},
 			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
