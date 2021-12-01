@@ -4,10 +4,6 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-### Dawid ###
-/src/main/resources/application.properties
-/src/main/resources/application.yml
-
 ### STS ###
 .apt_generated
 .classpath
