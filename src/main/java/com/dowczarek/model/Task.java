@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -18,6 +20,8 @@ public class Task {
     private String description;
     private boolean done;
     private LocalDateTime deadline;
+    private LocalDateTime createdOn;
+    private LocalDateTime updatedOn;
 
     Task() {
     }
@@ -26,11 +30,11 @@ public class Task {
         return id;
     }
 
-    public void setId(int id) {
+    void setId(int id) {
         this.id = id;
     }
 
-     public String getDescription() {
+    public String getDescription() {
         return description;
     }
 
@@ -52,5 +56,21 @@ public class Task {
 
     void setDeadline(LocalDateTime deadline) {
         this.deadline = deadline;
+    }
+
+    public void updateFrom(final Task source) {
+        description = source.description;
+        done = source.done;
+        deadline = source.deadline;
+    }
+
+    @PrePersist
+    void prePersist() {
+        createdOn = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    void preMerge() {
+        updatedOn = LocalDateTime.now();
     }
 }
