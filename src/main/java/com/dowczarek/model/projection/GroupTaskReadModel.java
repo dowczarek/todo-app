@@ -11,7 +11,7 @@ public class GroupTaskReadModel {
         done = source.isDone();
     }
 
-    String getDescription() {
+    public String getDescription() {
         return description;
     }
 
