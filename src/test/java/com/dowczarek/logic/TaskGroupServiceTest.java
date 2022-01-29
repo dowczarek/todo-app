@@ -1,5 +1,6 @@
 package com.dowczarek.logic;
 
+import com.dowczarek.model.TaskGroup;
 import com.dowczarek.model.TaskGroupRepository;
 import com.dowczarek.model.TaskRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -36,7 +37,7 @@ class TaskGroupServiceTest {
     @DisplayName("should throw IllegalArgumentException when no undone tasks in group and no task groups for given id")
     void toggleGroup_noUndoneTasksInGroup_And_noTaskGroup_throwsIllegalArgumentException() {
         // given
-        TaskGroupRepository mockTaskGroupRepository = mock(TaskGroupRepository.class);
+        var mockTaskGroupRepository = mock(TaskGroupRepository.class);
         when(mockTaskGroupRepository.findById(anyInt())).thenReturn(Optional.empty());
         // and
         TaskRepository mockTaskRepository = taskRepositoryReturning(false);
@@ -52,8 +53,29 @@ class TaskGroupServiceTest {
                 .hasMessageContaining("id not found");
     }
 
+    @Test
+    @DisplayName("should toggle group")
+    void toggleGroup_noUndoneTasksInGroup_throwsIllegalArgumentException() {
+        // given
+        var taskGroup = new TaskGroup();
+        var beforeToggle = taskGroup.isDone();
+        // and
+        var mockTaskGroupRepository = mock(TaskGroupRepository.class);
+        when(mockTaskGroupRepository.findById(anyInt())).thenReturn(Optional.of(taskGroup));
+        // and
+        TaskRepository mockTaskRepository = taskRepositoryReturning(false);
+        // system under test
+        var toTest = new TaskGroupService(mockTaskGroupRepository, mockTaskRepository);
+
+        // when
+        toTest.toggleGroup(0);
+
+        // then
+        assertThat(taskGroup.isDone()).isEqualTo(!beforeToggle);
+    }
+
     private TaskRepository taskRepositoryReturning(boolean result) {
-        TaskRepository mockTaskRepository = mock(TaskRepository.class);
+        var mockTaskRepository = mock(TaskRepository.class);
         when(mockTaskRepository.existsByDoneIsFalseAndGroup_Id(anyInt())).thenReturn(result);
 
         return mockTaskRepository;
