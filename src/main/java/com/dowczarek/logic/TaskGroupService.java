@@ -5,12 +5,10 @@ import com.dowczarek.model.TaskGroupRepository;
 import com.dowczarek.model.TaskRepository;
 import com.dowczarek.model.projection.GroupReadModel;
 import com.dowczarek.model.projection.GroupWriteModel;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
 public class TaskGroupService {
     private final TaskGroupRepository repository;
     private final TaskRepository taskRepository;
