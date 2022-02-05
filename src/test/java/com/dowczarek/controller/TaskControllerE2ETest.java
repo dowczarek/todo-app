@@ -28,6 +28,7 @@ class TaskControllerE2ETest {
     @Test
     void httpGet_returnAllTasks() {
         // given
+        int initial = repository.findAll().size();
         repository.save(new Task("Foo", LocalDateTime.now()));
         repository.save(new Task("Bar", LocalDateTime.now()));
 
@@ -35,8 +36,6 @@ class TaskControllerE2ETest {
         Task[] result = testRestTemplate.getForObject("http://localhost:" + port + "/tasks", Task[].class);
 
         // then
-        assertThat(result).hasSize(2);
+        assertThat(result).hasSize(initial + 2);
     }
-
-
 }
