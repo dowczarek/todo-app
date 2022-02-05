@@ -1,6 +1,7 @@
 package com.dowczarek.model.projection;
 
 import com.dowczarek.model.Task;
+import com.dowczarek.model.TaskGroup;
 
 import java.time.LocalDateTime;
 
@@ -24,7 +25,7 @@ public class GroupTaskWriteModel {
         this.deadline = deadline;
     }
 
-    public Task toTask() {
-        return new Task(description, deadline);
+    public Task toTask(TaskGroup group) {
+        return new Task(description, deadline, group);
     }
 }
