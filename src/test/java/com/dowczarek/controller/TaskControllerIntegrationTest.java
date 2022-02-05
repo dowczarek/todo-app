@@ -8,10 +8,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDateTime;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -24,16 +25,12 @@ class TaskControllerIntegrationTest {
     private TaskRepository repository;
 
     @Test
-    void httpGet_returnsGivenTask() {
+    void httpGet_returnsGivenTask() throws Exception {
         // given
         int id = repository.save(new Task("Foo", LocalDateTime.now())).getId();
 
         // when + then
-        try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/tasks/" + id))
-                    .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        mockMvc.perform(get("/tasks/" + id))
+                .andExpect(status().is2xxSuccessful());
     }
 }
