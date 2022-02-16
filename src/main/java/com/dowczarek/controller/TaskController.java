@@ -1,5 +1,6 @@
 package com.dowczarek.controller;
 
+import com.dowczarek.logic.TaskService;
 import com.dowczarek.model.Task;
 import com.dowczarek.model.TaskRepository;
 import org.slf4j.Logger;
@@ -20,15 +21,18 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/tasks")
 class TaskController {
     private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
     private final TaskRepository repository;
+    private final TaskService service;
 
-    TaskController(TaskRepository repository) {
+    TaskController(TaskRepository repository, TaskService service) {
         this.repository = repository;
+        this.service = service;
     }
 
     @PostMapping()
@@ -41,6 +45,12 @@ class TaskController {
     ResponseEntity<List<Task>> readAllTasks() {
         logger.warn("Exposing all the tasks!");
         return ResponseEntity.ok(repository.findAll());
+    }
+
+    @GetMapping("/async")
+    CompletableFuture<ResponseEntity<List<Task>>> readAllTasksAsync() {
+        logger.warn("Exposing all the tasks aync!");
+        return service.findAllAsync().thenApply(ResponseEntity::ok);
     }
 
     @GetMapping()
