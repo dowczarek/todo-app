@@ -8,6 +8,7 @@ import com.dowczarek.model.projection.GroupWriteModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,5 +57,15 @@ class TaskGroupController {
         logger.info("Toggle group");
         service.toggleGroup(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e) {
+        return ResponseEntity.notFound().build();
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    ResponseEntity<String> handleIllegalArgument(IllegalStateException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 }
