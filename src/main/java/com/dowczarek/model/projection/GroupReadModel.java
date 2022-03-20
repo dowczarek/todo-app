@@ -8,7 +8,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class GroupReadModel {
+    private int id;
     private String description;
+    private boolean done;
     /**
      * Deadline form the latest task in group.
      */
@@ -20,7 +22,9 @@ public class GroupReadModel {
     }
 
     public GroupReadModel(TaskGroup source) {
+        id = source.getId();
         description = source.getDescription();
+        done = source.isDone();
         source.getTasks().stream()
                 .map(Task::getDeadline)
                 .max(LocalDateTime::compareTo)
@@ -30,12 +34,28 @@ public class GroupReadModel {
                 .collect(Collectors.toSet());
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
 
     public LocalDateTime getDeadline() {
         return deadline;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 
     public void setDeadline(LocalDateTime deadline) {

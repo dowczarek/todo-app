@@ -19,7 +19,7 @@ public class GroupTaskReadModel {
         this.description = description;
     }
 
-    boolean isDone() {
+    public boolean isDone() {
         return done;
     }
 

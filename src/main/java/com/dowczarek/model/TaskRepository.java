@@ -12,6 +12,8 @@ public interface TaskRepository {
 
     Page<Task> findAll(Pageable page);
 
+    List<Task> findAllByGroup_Id(int groupId);
+
     Optional<Task> findById(Integer id);
 
     boolean existsById(Integer id);
